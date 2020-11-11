@@ -7,70 +7,68 @@ import (
 )
 
 type querySet struct {
-	URL    string
-	Size   int
-	Offset int
-	Code   int
-	OK     bool
+	URL   string
+	Size  int
+	After string
+	Code  int
+	OK    bool
 }
 
 func Test_RangeQueryParams(test *testing.T) {
 	var request *http.Request = new(http.Request)
-	var q_defaults map[string]int = defaults()
+	var q_defaults map[string]interface{} = defaults()
 
 	var set querySet
 	var sets []querySet = []querySet{
 		querySet{
-			URL:    "http://imonke.io/?offset=10&size=10",
-			Size:   10,
-			Offset: 10,
-			Code:   0,
-			OK:     true,
+			URL:   "http://imonke.io/?&size=10",
+			Size:  10,
+			After: "",
+			Code:  0,
+			OK:    true,
 		},
 		querySet{
-			URL:    "http://imonke.io/?offset=100000&size=-3",
-			Size:   q_defaults["size"],
-			Offset: 100000,
-			Code:   0,
-			OK:     true,
+			URL:   "http://imonke.io/?after=foobar_baz&size=50",
+			Size:  q_defaults["size"].(int),
+			After: "foobar_baz",
+			Code:  0,
+			OK:    true,
 		},
 		querySet{
-			URL:    "http://imonke.io/?offset=-3&size=-3",
-			Size:   q_defaults["size"],
-			Offset: q_defaults["offset"],
-			Code:   0,
-			OK:     true,
+			URL:   "http://imonke.io/?after=jol",
+			Size:  q_defaults["size"].(int),
+			After: "jol",
+			Code:  0,
+			OK:    true,
 		},
 		querySet{
-			URL:    "http://imonke.io/?&size=300",
-			Size:   limits["size"],
-			Offset: q_defaults["offset"],
-			Code:   0,
-			OK:     true,
+			URL:   "http://imonke.io/?&size=300",
+			Size:  RANGE_SIZE_LIMIT,
+			After: q_defaults["after"].(string),
+			Code:  0,
+			OK:    true,
 		},
 		querySet{
-			URL:    "http://imonke.io/?&size=lol",
-			Size:   q_defaults["size"],
-			Offset: q_defaults["offset"],
-			Code:   400,
-			OK:     false,
+			URL:   "http://imonke.io/?&size=lol",
+			Size:  q_defaults["size"].(int),
+			After: q_defaults["after"].(string),
+			Code:  400,
+			OK:    false,
 		},
 		querySet{
-			URL:    "http://imonke.io/?&offset=42069",
-			Size:   q_defaults["size"],
-			Offset: 42069,
-			Code:   0,
-			OK:     true,
+			URL:   "http://imonke.io/?&size=-2",
+			Size:  q_defaults["size"].(int),
+			After: q_defaults["after"].(string),
+			Code:  400,
+			OK:    false,
 		},
 	}
 
-	var parsed map[string]int
-
+	var parsed map[string]interface{}
 	var modified *http.Request
 	var ok bool
 	var code int
 	var err error
-
 	for _, set = range sets {
 		if request.URL, err = url.Parse(set.URL); err != nil {
 			test.Fatal(err)
@@ -92,14 +90,14 @@ func Test_RangeQueryParams(test *testing.T) {
 			continue
 		}
 
-		parsed = modified.Context().Value("parsed_query").(map[string]int)
+		parsed = modified.Context().Value("query").(map[string]interface{})
 
-		if parsed["size"] != set.Size {
+		if parsed["size"].(int) != set.Size {
 			test.Errorf("size mismatch! have: %d, want: %d", parsed["size"], set.Size)
 		}
 
-		if parsed["offset"] != set.Offset {
-			test.Errorf("offset mismatch! have: %d, want: %d", parsed["offset"], set.Offset)
+		if parsed["after"].(string) != set.After {
+			test.Errorf("after mismatch! have: %s, want: %s", parsed["after"], set.After)
 		}
 	}
 }
