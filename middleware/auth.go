@@ -8,6 +8,9 @@ import (
 	"strings"
 )
 
+/**
+ * Reject unauthed users
+ */
 func MustAuth(request *http.Request) (modified *http.Request, ok bool, code int, r_map map[string]interface{}, err error) {
 	code = 401
 	var bearer string = strings.TrimPrefix(request.Header.Get("Authorization"), BEARER_PREFIX)
@@ -47,5 +50,37 @@ func RejectBanned(request *http.Request) (_ *http.Request, ok bool, code int, r_
 	}
 
 	ok = !banned
+	return
+}
+
+/**
+ * Reject users who are not moderators
+ */
+func MustModerator(request *http.Request) (_ *http.Request, ok bool, code int, r_map map[string]interface{}, err error) {
+	code = 403
+
+	var owner string
+	var owned bool
+	if owner, owned = request.Context().Value("requester").(string); !owned {
+		return
+	}
+
+	ok, err = monkebase.IsModerator(owner)
+	return
+}
+
+/**
+ * Reject users who are not admins
+ */
+func MustAdmin(request *http.Request) (_ *http.Request, ok bool, code int, r_map map[string]interface{}, err error) {
+	code = 403
+
+	var owner string
+	var owned bool
+	if owner, owned = request.Context().Value("requester").(string); !owned {
+		return
+	}
+
+	ok, err = monkebase.IsAdmin(owner)
 	return
 }
