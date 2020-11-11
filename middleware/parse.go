@@ -30,7 +30,7 @@ func limitedSize(value string, limit int) (limted int, err error) {
 	return
 }
 
-func RangeQueryParams(request *http.Request) (modified *http.Request, ok bool, code int, _ map[string]interface{}, err error) {
+func PaginationParams(request *http.Request) (modified *http.Request, ok bool, code int, _ map[string]interface{}, err error) {
 	var parsed map[string]interface{} = defaults()
 	var key string
 	var value []string

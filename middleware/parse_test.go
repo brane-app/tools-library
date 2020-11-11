@@ -14,7 +14,7 @@ type querySet struct {
 	OK    bool
 }
 
-func Test_RangeQueryParams(test *testing.T) {
+func Test_PaginationParams(test *testing.T) {
 	var request *http.Request = new(http.Request)
 	var q_defaults map[string]interface{} = defaults()
 
@@ -74,7 +74,7 @@ func Test_RangeQueryParams(test *testing.T) {
 			test.Fatal(err)
 		}
 
-		if modified, ok, code, _, err = RangeQueryParams(request); err != nil {
+		if modified, ok, code, _, err = PaginationParams(request); err != nil {
 			test.Fatal(err)
 		}
 
