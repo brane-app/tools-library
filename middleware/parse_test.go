@@ -7,11 +7,11 @@ import (
 )
 
 type querySet struct {
-	URL   string
-	Size  int
-	After string
-	Code  int
-	OK    bool
+	URL    string
+	Size   int
+	Before string
+	Code   int
+	OK     bool
 }
 
 func Test_PaginationParams(test *testing.T) {
@@ -21,46 +21,46 @@ func Test_PaginationParams(test *testing.T) {
 	var set querySet
 	var sets []querySet = []querySet{
 		querySet{
-			URL:   "http://imonke.io/?&size=10",
-			Size:  10,
-			After: "",
-			Code:  0,
-			OK:    true,
+			URL:    "http://imonke.io/?&size=10",
+			Size:   10,
+			Before: "",
+			Code:   0,
+			OK:     true,
 		},
 		querySet{
-			URL:   "http://imonke.io/?after=foobar_baz&size=50",
-			Size:  q_defaults["size"].(int),
-			After: "foobar_baz",
-			Code:  0,
-			OK:    true,
+			URL:    "http://imonke.io/?before=foobar_baz&size=50",
+			Size:   q_defaults["size"].(int),
+			Before: "foobar_baz",
+			Code:   0,
+			OK:     true,
 		},
 		querySet{
-			URL:   "http://imonke.io/?after=jol",
-			Size:  q_defaults["size"].(int),
-			After: "jol",
-			Code:  0,
-			OK:    true,
+			URL:    "http://imonke.io/?before=jol",
+			Size:   q_defaults["size"].(int),
+			Before: "jol",
+			Code:   0,
+			OK:     true,
 		},
 		querySet{
-			URL:   "http://imonke.io/?&size=300",
-			Size:  RANGE_SIZE_LIMIT,
-			After: q_defaults["after"].(string),
-			Code:  0,
-			OK:    true,
+			URL:    "http://imonke.io/?&size=300",
+			Size:   RANGE_SIZE_LIMIT,
+			Before: q_defaults["before"].(string),
+			Code:   0,
+			OK:     true,
 		},
 		querySet{
-			URL:   "http://imonke.io/?&size=lol",
-			Size:  q_defaults["size"].(int),
-			After: q_defaults["after"].(string),
-			Code:  400,
-			OK:    false,
+			URL:    "http://imonke.io/?&size=lol",
+			Size:   q_defaults["size"].(int),
+			Before: q_defaults["before"].(string),
+			Code:   400,
+			OK:     false,
 		},
 		querySet{
-			URL:   "http://imonke.io/?&size=-2",
-			Size:  q_defaults["size"].(int),
-			After: q_defaults["after"].(string),
-			Code:  400,
-			OK:    false,
+			URL:    "http://imonke.io/?&size=-2",
+			Size:   q_defaults["size"].(int),
+			Before: q_defaults["before"].(string),
+			Code:   400,
+			OK:     false,
 		},
 	}
 
@@ -96,8 +96,8 @@ func Test_PaginationParams(test *testing.T) {
 			test.Errorf("size mismatch! have: %d, want: %d", parsed["size"], set.Size)
 		}
 
-		if parsed["after"].(string) != set.After {
-			test.Errorf("after mismatch! have: %s, want: %s", parsed["after"], set.After)
+		if parsed["before"].(string) != set.Before {
+			test.Errorf("before mismatch! have: %s, want: %s", parsed["before"], set.Before)
 		}
 	}
 }

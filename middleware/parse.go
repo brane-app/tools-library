@@ -9,8 +9,8 @@ import (
 
 func defaults() (them map[string]interface{}) {
 	them = map[string]interface{}{
-		"size":  RANGE_SIZE_DEFAULT,
-		"after": "",
+		"size":   RANGE_SIZE_DEFAULT,
+		"before": "",
 	}
 
 	return
@@ -46,7 +46,7 @@ func PaginationParams(request *http.Request) (modified *http.Request, ok bool, c
 				code = 400
 				return
 			}
-		case "after":
+		case "before":
 			parsed[key] = value[0]
 		}
 	}
