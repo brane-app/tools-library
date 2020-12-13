@@ -1,6 +1,6 @@
-module github.com/imonke/monkelib
+module git.gastrodon.io/imonke/monkelib
 
-go 1.13
+go 1.15
 
 require (
 	github.com/google/uuid v1.1.2
