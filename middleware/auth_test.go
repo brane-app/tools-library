@@ -1,9 +1,9 @@
 package middleware
 
 import (
+	"git.gastrodon.io/imonke/monkebase"
+	"git.gastrodon.io/imonke/monketype"
 	"github.com/google/uuid"
-	"github.com/imonke/monkebase"
-	"github.com/imonke/monketype"
 
 	"context"
 	"net/http"
