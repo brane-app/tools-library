@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/imonke/monkebase"
+	"git.gastrodon.io/imonke/monkebase"
 
 	"context"
 	"net/http"

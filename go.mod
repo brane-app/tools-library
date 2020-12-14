@@ -3,8 +3,8 @@ module git.gastrodon.io/imonke/monkelib
 go 1.15
 
 require (
+	git.gastrodon.io/imonke/monkebase v0.0.0-20201213235510-b41c3b0be731
+	git.gastrodon.io/imonke/monketype v0.0.0-20201213055509-5f764755b22d
 	github.com/google/uuid v1.1.2
-	github.com/imonke/monkebase v0.0.0-20201111032832-5890c2b1cc4c
-	github.com/imonke/monketype v0.0.0-20201108235822-b761f9de344a
-	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897 // indirect
+	golang.org/x/crypto v0.0.0-20201208171446-5f87f3452ae9 // indirect
 )
