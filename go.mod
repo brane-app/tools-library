@@ -1,4 +1,4 @@
-module git.gastrodon.io/imonke/monkelib
+module github.com/brane-app/tools-library
 
 go 1.15
 
