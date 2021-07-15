@@ -19,7 +19,7 @@ var (
 )
 
 func TestMain(main *testing.M) {
-	database.Connect(os.Getenv("MONKEBASE_CONNECTION"))
+	database.Connect(os.Getenv("DATABASE_CONNECTION"))
 	user = types.NewUser(nick, "", email)
 
 	var err error
