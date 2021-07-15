@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"git.gastrodon.io/imonke/monkebase"
-	"git.gastrodon.io/imonke/monketype"
+	"github.com/brane-app/database-library"
+	"github.com/brane-app/types-library"
 	"github.com/google/uuid"
 
 	"context"
@@ -95,8 +95,8 @@ func Test_MustAuth(test *testing.T) {
 
 func Test_RejectBanned(test *testing.T) {
 	var banned string = uuid.New().String()
-	var ban monketype.Ban = monketype.NewBan(uuid.New().String(), banned, "", 0, true)
-	monkebase.WriteBan(ban.Map())
+	var ban types.Ban = types.NewBan(uuid.New().String(), banned, "", 0, true)
+	database.WriteBan(ban.Map())
 
 	var request *http.Request = new(http.Request).WithContext(context.WithValue(
 		context.TODO(),

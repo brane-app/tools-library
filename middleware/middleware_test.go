@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"git.gastrodon.io/imonke/monkebase"
-	"git.gastrodon.io/imonke/monketype"
+	"github.com/brane-app/database-library"
+	"github.com/brane-app/types-library"
 
 	"os"
 	"testing"
@@ -14,24 +14,24 @@ const (
 )
 
 var (
-	user  monketype.User
+	user  types.User
 	token string
 )
 
 func TestMain(main *testing.M) {
-	monkebase.Connect(os.Getenv("MONKEBASE_CONNECTION"))
-	user = monketype.NewUser(nick, "", email)
+	database.Connect(os.Getenv("MONKEBASE_CONNECTION"))
+	user = types.NewUser(nick, "", email)
 
 	var err error
-	if err = monkebase.WriteUser(user.Map()); err != nil {
+	if err = database.WriteUser(user.Map()); err != nil {
 		panic(err)
 	}
 
-	if token, _, err = monkebase.CreateToken(user.ID); err != nil {
+	if token, _, err = database.CreateToken(user.ID); err != nil {
 		panic(err)
 	}
 
 	var result int = main.Run()
-	monkebase.DeleteUser(user.ID)
+	database.DeleteUser(user.ID)
 	os.Exit(result)
 }

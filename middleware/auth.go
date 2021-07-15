@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"git.gastrodon.io/imonke/monkebase"
+	"github.com/brane-app/database-library"
 
 	"context"
 	"net/http"
@@ -16,7 +16,7 @@ func MustAuth(request *http.Request) (modified *http.Request, ok bool, code int,
 	var bearer string = strings.TrimPrefix(request.Header.Get("Authorization"), BEARER_PREFIX)
 
 	var owner string
-	if owner, ok, err = monkebase.ReadTokenStat(bearer); err != nil || !ok {
+	if owner, ok, err = database.ReadTokenStat(bearer); err != nil || !ok {
 		r_map = map[string]interface{}{"error": "bad_auth"}
 	}
 
@@ -43,7 +43,7 @@ func RejectBanned(request *http.Request) (_ *http.Request, ok bool, code int, r_
 
 	ok = false
 	var banned bool
-	if banned, err = monkebase.IsBanned(owner); err != nil || banned {
+	if banned, err = database.IsBanned(owner); err != nil || banned {
 		code = 403
 		r_map = map[string]interface{}{"error": "banned"}
 		return
@@ -65,7 +65,7 @@ func MustModerator(request *http.Request) (_ *http.Request, ok bool, code int, r
 		return
 	}
 
-	ok, err = monkebase.IsModerator(owner)
+	ok, err = database.IsModerator(owner)
 	return
 }
 
@@ -81,6 +81,6 @@ func MustAdmin(request *http.Request) (_ *http.Request, ok bool, code int, r_map
 		return
 	}
 
-	ok, err = monkebase.IsAdmin(owner)
+	ok, err = database.IsAdmin(owner)
 	return
 }
