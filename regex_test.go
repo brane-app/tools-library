@@ -1,4 +1,4 @@
-package monkelib
+package tools
 
 import (
 	"testing"
