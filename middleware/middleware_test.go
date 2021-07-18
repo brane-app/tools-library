@@ -20,6 +20,7 @@ var (
 
 func TestMain(main *testing.M) {
 	database.Connect(os.Getenv("DATABASE_CONNECTION"))
+	database.Create()
 	user = types.NewUser(nick, "", email)
 
 	var err error
